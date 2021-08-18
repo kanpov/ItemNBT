@@ -1,0 +1,25 @@
+{
+    "schemaVersion": 1,
+    "id": "itemnbt",
+    "version": "${version}",
+    "name": "ItemNBT",
+    "description": "This library allows to save & load data for items in NBTs.",
+    "authors": [
+        "RedGrapefruit09"
+    ],
+    "contact": {
+        "repo": "https://github.com/RedGrapefruit09/ItemNBT"
+    },
+    "license": "MIT",
+    "icon": "assets/itemnbt/icon.png",
+    "environment": "*",
+    "entrypoints": {},
+    "mixins": [
+        "itemnbt.mixins.json"
+    ],
+    "depends": {
+        "fabricloader": ">=0.11.6",
+        "fabric": "*",
+        "minecraft": "1.17.1"
+    }
+}
