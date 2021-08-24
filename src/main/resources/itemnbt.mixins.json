@@ -4,6 +4,7 @@
     "package": "com.redgrapefruit.itemnbt.itemnbt.mixin",
     "compatibilityLevel": "JAVA_8",
     "mixins": [
+        "ItemStackMixin"
     ],
     "client": [
     ],
