@@ -1,4 +1,9 @@
 
+# End-of-life
+
+The 1.x API has reached its _end-of-life_, please use the [new 2.x API](https://github.com/RedGrapefruit09/ItemNBT/tree/v2.x). \
+The 1.x API had critical usability issues and inconveniences, which have been fixed in newer version.
+
 # ItemNBT
 
 ItemNBT is a tiny library for saving & loading NBT data for items.\
