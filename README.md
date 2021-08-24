@@ -40,7 +40,7 @@ and bundle it inside your mod's JAR file, so it doesn't have to be installed sep
 
 ## Use
 
-### 1. Concepts
+### Concepts
 
 Before we begin, you should get yourself familiar with some concepts added by this library:
 
@@ -104,3 +104,87 @@ To fetch an instance of your `ItemData` (typically so your item can use item), y
 - `ItemDataManager.get(ItemStack)` - returns _all possible results_.\
   This is the only way to securely fetch instances when using unsafe `Classifier`s.
 
+### Practice
+
+Now, let's get to work!
+
+In this example, we'll create an item which contains a serialized value named `count`, increments it every tick and\
+displays its value in the item's tooltip.
+
+##### Item
+
+```java
+public class CounterItem extends Item {
+    public CounterItem() {
+        super(new Item.Settings().group(ItemGroup.MISC)); // put our item into the MISC group for testing purposes
+    }
+
+    @Override
+    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
+        // Append the tooltip list with the label indicating the value of the counter
+        tooltip.add(new LiteralText("Counter: " + getData(stack).counter));
+    }
+
+    @Override
+    public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
+        super.inventoryTick(stack, world, entity, slot, selected);
+        // Every tick we'll increment the counter
+        getData(stack).counter++;
+    }
+
+    private CounterItemData getData(ItemStack stack) { // it's good practice to set up such method to avoid repetitiveness when fetching your data instance
+        // We'll fetch the instance of CounterItemData using the ItemStack we have got as an argument
+        ItemData uncheckedData = ItemDataManager.get(stack, ExampleMod.COUNTER_DATA_CLASSIFIER);
+        // Now we have to make sure the data is instanceof CounterItemData and not null (always check for null since you'll get null if the search failed)
+        Objects.requireNonNull(uncheckedData, "Search failed");
+        return (CounterItemData) uncheckedData; // now just cast the result to our type
+    }
+}
+```
+
+##### ItemData
+
+```java
+public class CounterItemData implements ItemData {
+    public int counter; // our counter parameter
+
+    public CounterItemData() {
+        // Set the value to default. The actual value will be set after deserialization
+        counter = 0;
+    }
+
+    @Override
+    public void readNbt(@NotNull Item item, @NotNull ItemStack stack, @NotNull NbtCompound nbt) {
+        // Read in your data here using the NbtCompound given
+        counter = nbt.getInt("Counter");
+    }
+
+    @Override
+    public void writeNbt(@NotNull Item item, @NotNull ItemStack stack, @NotNull NbtCompound nbt) {
+        // Write your data here into the NbtCompound given, so it's read back in next time you log into your world
+        nbt.putInt("Counter", counter);
+    }
+}
+```
+
+##### Initializer
+
+```java
+public class ExampleMod implements ModInitializer {
+    // instances of CounterItemData will be attached to all CounterItem's
+    public static final Classifier COUNTER_DATA_CLASSIFIER = Classifier.ofType(CounterItem.class);
+    public static final CounterItem COUNTER_ITEM = new CounterItem(); // our actual item to register like usual
+
+    static {
+        // Register your ItemData types at static initialization
+        ItemDataManager.register(COUNTER_DATA_CLASSIFIER, CounterItemData::new); // pass the constructor reference as the factory
+    }
+
+    @Override
+    public void onInitialize() {
+        // Here we'll register the item
+        Registry.register(Registry.ITEM, new Identifier("example_mod", "counter_item"), COUNTER_ITEM);
+    }
+}
+```
