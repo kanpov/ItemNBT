@@ -16,7 +16,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
 @SuppressWarnings("ConstantConditions")
-public final class ItemHandlers {
+public final class ItemDataManager {
     private static final @NotNull Map<Classifier, Supplier<ItemData>> classifierToFactoryMap = new HashMap<>();
 
     public static <T extends Item> void register(@NotNull Classifier classifier, @NotNull Supplier<ItemData> factory) {
@@ -29,14 +29,14 @@ public final class ItemHandlers {
     public static @NotNull ImmutableList<ItemData> getAll(@NotNull ItemStack stack) {
         Objects.requireNonNull(stack, "ItemStack is null");
 
-        return ((ItemStackMixinAccess)(Object) stack).itemnbt$retrieve();
+        return ((ItemStackMixinAccess)(Object) stack).itemnbt$getAll();
     }
 
     public static @Nullable ItemData get(@NotNull ItemStack stack, @NotNull Classifier targetClassifier) {
         Objects.requireNonNull(stack, "ItemStack is null");
         Objects.requireNonNull(targetClassifier, "Classifier is null");
 
-        final ImmutableMap<Classifier, ItemData> allResults = ((ItemStackMixinAccess)(Object) stack).itemnbt$retrieveWithContext();
+        final ImmutableMap<Classifier, ItemData> allResults = ((ItemStackMixinAccess)(Object) stack).itemnbt$getAllWithContext();
 
         for (Classifier classifier : allResults.keySet()) {
             if (classifier.equals(targetClassifier)) {

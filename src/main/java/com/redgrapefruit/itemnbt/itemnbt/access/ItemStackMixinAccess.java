@@ -7,6 +7,6 @@ import com.redgrapefruit.itemnbt.itemnbt.ItemData;
 import org.jetbrains.annotations.NotNull;
 
 public interface ItemStackMixinAccess {
-    @NotNull ImmutableList<ItemData> itemnbt$retrieve();
-    @NotNull ImmutableMap<Classifier, ItemData> itemnbt$retrieveWithContext();
+    @NotNull ImmutableList<ItemData> itemnbt$getAll();
+    @NotNull ImmutableMap<Classifier, ItemData> itemnbt$getAllWithContext();
 }
