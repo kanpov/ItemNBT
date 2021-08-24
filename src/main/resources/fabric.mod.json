@@ -1,9 +1,9 @@
 {
     "schemaVersion": 1,
     "id": "itemnbt",
-    "version": "${version}",
+    "version": "2.0",
     "name": "ItemNBT",
-    "description": "This library allows to save & load data for items in NBTs.",
+    "description": "This library allows to save & load data for items in NBT using ItemData",
     "authors": [
         "RedGrapefruit09"
     ],

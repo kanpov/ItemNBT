@@ -22,6 +22,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * {@link ItemStackMixin} is the actual implementation of this library.
+ * <br><br>
+ * It manages associated {@link ItemData} instances, serializes and deserializes them and contains the
+ * implementation for search operations defined in {@link ItemStackMixinAccess}.
+ */
 @Mixin(ItemStack.class)
 public class ItemStackMixin implements ItemStackMixinAccess {
     @Shadow @Final @Deprecated private Item item;
