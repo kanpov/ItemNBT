@@ -12,7 +12,7 @@ The library is available on [my Maven](https://github.com/RedGrapefruit09/Maven)
 At the end of your `gradle.properties` file:
 
 ```properties
-itemnbt_version=2.0
+itemnbt_version=2.1
 ```
 
 In your `build.gradle`:
