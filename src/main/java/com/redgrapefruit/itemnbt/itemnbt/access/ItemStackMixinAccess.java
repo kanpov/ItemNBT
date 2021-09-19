@@ -32,4 +32,16 @@ public interface ItemStackMixinAccess {
      * @return Produced {@link ImmutableMap} of results.
      */
     @NotNull ImmutableMap<Classifier, ItemData> itemnbt$getAllWithContext();
+
+    @ApiStatus.Experimental
+    void itemnbt$associate(@NotNull Classifier classifier, @NotNull ItemData data);
+
+    @SuppressWarnings("ConstantConditions")
+    @ApiStatus.Experimental
+    static void copyOver(@NotNull ItemStack source, @NotNull ItemStack output) {
+        final ItemStackMixinAccess srcAccess = (ItemStackMixinAccess)(Object) output;
+        final ItemStackMixinAccess outAccess = (ItemStackMixinAccess)(Object) source;
+
+        srcAccess.itemnbt$getAllWithContext().forEach(outAccess::itemnbt$associate);
+    }
 }

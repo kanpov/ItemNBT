@@ -55,6 +55,11 @@ public class ItemStackMixin implements ItemStackMixinAccess {
         }, self);
     }
 
+    @Inject(method = "copy", at = @At("RETURN"))
+    private void itemnbt$copy(CallbackInfoReturnable<ItemStack> cir) {
+        ItemStackMixinAccess.copyOver((ItemStack)(Object) this, cir.getReturnValue());
+    }
+
     @Override
     public @NotNull ImmutableList<ItemData> itemnbt$getAll() {
         final ItemStack self = (ItemStack) (Object) this;
@@ -79,5 +84,10 @@ public class ItemStackMixin implements ItemStackMixinAccess {
         }, self);
 
         return builder.build();
+    }
+
+    @Override
+    public void itemnbt$associate(@NotNull Classifier classifier, @NotNull ItemData data) {
+        itemnbt$associates.putIfAbsent(classifier, data);
     }
 }
