@@ -7,7 +7,7 @@ A stable version is expected to be available in Q1 2022.
 The roadmap is as follows:
 
 - [x] Conceptual design
-- [ ] Manual NBT serialization
+- [x] Manual NBT serialization
 - [ ] Specification-based serialization
 - [ ] Reflection-based serialization
 - [ ] Advanced features:

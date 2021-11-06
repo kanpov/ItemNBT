@@ -116,3 +116,6 @@ run/
 
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
 !gradle-wrapper.jar
+
+# Testmod for debugging purposes
+src/main/java/com/redgrapefruit/itemnbt3/testmod/
