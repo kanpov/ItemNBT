@@ -1,10 +1,10 @@
 {
     "required": true,
     "minVersion": "0.8",
-    "package": "com.redgrapefruit.itemnbt.itemnbt.mixin",
+    "package": "com.redgrapefruit.itemnbt3.mixin",
     "compatibilityLevel": "JAVA_8",
     "mixins": [
-        "ItemStackMixin"
+        "NbtCompoundMixin"
     ],
     "client": [
     ],
