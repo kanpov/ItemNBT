@@ -16,3 +16,27 @@ The roadmap is as follows:
     - [ ] Data preprocessors
     - [ ] Data postprocessors
     - [ ] Data fixers
+
+## Use
+
+The library is **not ready** for usage yet, but early alphas are already available.
+
+The latest alpha release is: `3.0-alpha.1`.
+
+Include this in your `build.gradle`:
+```groovy
+repositories {
+  maven {
+    url = "https://redgrapefruit09.github.io"
+    content {
+      includeGroup "com.redgrapefruit.itemnbt"
+    }
+  }
+}
+
+dependencies {
+  modImplementation "com.redgrapefruit.itemnbt:itemnbt:3.0-alpha.1"
+  include "com.redgrapefruit.itemnbt:itemnbt:3.0-alpha.1"
+}
+
+```
