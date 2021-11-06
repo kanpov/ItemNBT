@@ -27,7 +27,7 @@ Include this in your `build.gradle`:
 ```groovy
 repositories {
   maven {
-    url = "https://redgrapefruit09.github.io"
+    url = "https://redgrapefruit09.github.io/maven"
     content {
       includeGroup "com.redgrapefruit.itemnbt"
     }
