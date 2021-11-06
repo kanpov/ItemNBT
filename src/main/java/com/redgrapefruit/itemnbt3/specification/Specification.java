@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class Specification {
-    private final @NotNull Map<String, TypeSerializer<Object>> rootTree = new HashMap<>();
+    private final @NotNull Map<String, TypeSerializer<?>> rootTree = new HashMap<>();
     private final @NotNull Map<String, Specification> nestedTree = new HashMap<>();
     private final @NotNull String id;
 
@@ -20,22 +20,18 @@ public class Specification {
         this.id = id;
     }
 
-    public @NotNull Specification add(@NotNull String key, @NotNull TypeSerializer<Object> serializer) {
+    public void add(@NotNull String key, @NotNull TypeSerializer<?> serializer) {
         Objects.requireNonNull(key);
         Objects.requireNonNull(serializer);
 
         rootTree.putIfAbsent(key, serializer);
-
-        return this;
     }
 
-    public @NotNull Specification add(@NotNull String key, @NotNull Specification specification) {
+    public void add(@NotNull String key, @NotNull Specification specification) {
         Objects.requireNonNull(key);
         Objects.requireNonNull(specification);
 
         nestedTree.putIfAbsent(key, specification);
-
-        return this;
     }
 
     @ApiStatus.Internal
@@ -45,8 +41,7 @@ public class Specification {
 
         // Write root tree
         rootTree.forEach((key, serializer) -> {
-            final Object value = compound.get(key);
-            serializer.writeNbt(key, nbt, value);
+            serializer.writeNbt(key, nbt, compound.get(key));
         });
 
         // Write nested tree
@@ -77,5 +72,96 @@ public class Specification {
     @ApiStatus.Internal
     public @NotNull String getId() {
         return id;
+    }
+
+    public static @NotNull Builder builder(@NotNull String id) {
+        return new Builder(id);
+    }
+
+    public static class Builder {
+        private final @NotNull Map<String, TypeSerializer<?>> rootTree = new HashMap<>();
+        private final @NotNull Map<String, Specification> nestedTree = new HashMap<>();
+        private final @NotNull String id;
+
+        public Builder(@NotNull String id) {
+            Objects.requireNonNull(id);
+
+            this.id = id;
+        }
+
+        public @NotNull Builder add(@NotNull String key, @NotNull TypeSerializer<?> serializer) {
+            Objects.requireNonNull(key);
+            Objects.requireNonNull(serializer);
+
+            rootTree.putIfAbsent(key, serializer);
+
+            return this;
+        }
+
+        public @NotNull Builder add(@NotNull String key, @NotNull Specification specification) {
+            Objects.requireNonNull(key);
+            Objects.requireNonNull(specification);
+
+            nestedTree.putIfAbsent(key, specification);
+
+            return this;
+        }
+
+        public @NotNull Builder addByte(@NotNull String key) {
+            return add(key, MappedTypeSerializer.BYTE);
+        }
+
+        public @NotNull Builder addShort(@NotNull String key) {
+            return add(key, MappedTypeSerializer.SHORT);
+        }
+
+        public @NotNull Builder addInt(@NotNull String key) {
+            return add(key, MappedTypeSerializer.INT);
+        }
+
+        public @NotNull Builder addLong(@NotNull String key) {
+            return add(key, MappedTypeSerializer.LONG);
+        }
+
+        public @NotNull Builder addUUID(@NotNull String key) {
+            return add(key, MappedTypeSerializer.UUID);
+        }
+
+        public @NotNull Builder addFloat(@NotNull String key) {
+            return add(key, MappedTypeSerializer.FLOAT);
+        }
+
+        public @NotNull Builder addDouble(@NotNull String key) {
+            return add(key, MappedTypeSerializer.DOUBLE);
+        }
+
+        public @NotNull Builder addString(@NotNull String key) {
+            return add(key, MappedTypeSerializer.STRING);
+        }
+
+        public @NotNull Builder addByteArray(@NotNull String key) {
+            return add(key, MappedTypeSerializer.BYTE_ARRAY);
+        }
+
+        public @NotNull Builder addIntArray(@NotNull String key) {
+            return add(key, MappedTypeSerializer.INT_ARRAY);
+        }
+
+        public @NotNull Builder addLongArray(@NotNull String key) {
+            return add(key, MappedTypeSerializer.LONG_ARRAY);
+        }
+
+        public @NotNull Builder addBool(@NotNull String key) {
+            return add(key, MappedTypeSerializer.BOOL);
+        }
+
+        public @NotNull Specification build() {
+            final Specification spec = new Specification(id);
+
+            rootTree.forEach(spec::add);
+            nestedTree.forEach(spec::add);
+
+            return spec;
+        }
     }
 }
