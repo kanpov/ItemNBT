@@ -1,4 +1,4 @@
-package com.redgrapefruit.itemnbt3;
+package com.redgrapefruit.itemnbt3.custom;
 
 import com.redgrapefruit.itemnbt3.util.NbtCompoundMixinAccess;
 import net.minecraft.item.ItemStack;

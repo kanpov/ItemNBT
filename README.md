@@ -38,5 +38,4 @@ dependencies {
   modImplementation "com.redgrapefruit.itemnbt:itemnbt:3.0-alpha.1"
   include "com.redgrapefruit.itemnbt:itemnbt:3.0-alpha.1"
 }
-
 ```

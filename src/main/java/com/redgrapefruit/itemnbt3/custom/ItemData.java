@@ -1,4 +1,4 @@
-package com.redgrapefruit.itemnbt3;
+package com.redgrapefruit.itemnbt3.custom;
 
 import net.minecraft.nbt.NbtCompound;
 import org.jetbrains.annotations.NotNull;
