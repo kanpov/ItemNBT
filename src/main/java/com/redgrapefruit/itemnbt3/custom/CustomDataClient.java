@@ -10,17 +10,17 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
- * The {@link ItemDataHelper} provides several key operations for working with {@link ItemData} instances.
+ * The {@link CustomDataClient} provides several key operations for working with {@link CustomData} instances.
  * <br><br>
  * Check out usage examples <a href="https://redgrapefruit.gitbook.io/itemnbt/api-examples/itemdatahelper">here</a>
  */
-public class ItemDataHelper {
+public class CustomDataClient {
     // ItemDataHelper is static
-    private ItemDataHelper() {
-        throw new RuntimeException("ItemDataManager is not meant to be instantiated.");
+    private CustomDataClient() {
+        throw new RuntimeException("CustomDataClient is not meant to be instantiated.");
     }
 
-    private static <T extends ItemData> void prepare(@NotNull T instance, @NotNull ItemStack stack) {
+    private static <T extends CustomData> void prepare(@NotNull T instance, @NotNull ItemStack stack) {
         Objects.requireNonNull(instance);
         Objects.requireNonNull(stack);
 
@@ -36,14 +36,14 @@ public class ItemDataHelper {
     }
 
     /**
-     * Retrieves an {@link ItemData} attached to the given {@link ItemStack}'s NBT.
+     * Retrieves an {@link CustomData} attached to the given {@link ItemStack}'s NBT.
      *
-     * @param factory A factory that initializes the {@link ItemData} instance. Typically, this should be a constructor reference for the instance's type.
+     * @param factory A factory that initializes the {@link CustomData} instance. Typically, this should be a constructor reference for the instance's type.
      * @param stack The {@link ItemStack}, in whose NBT the data is located in.
-     * @param <T> The type of the {@link ItemData}.
+     * @param <T> The type of the {@link CustomData}.
      * @return The obtained instance in the given generic type.
      */
-    public static <T extends ItemData> T get(@NotNull Supplier<T> factory, @NotNull ItemStack stack) {
+    public static <T extends CustomData> T get(@NotNull Supplier<T> factory, @NotNull ItemStack stack) {
         Objects.requireNonNull(factory);
         Objects.requireNonNull(stack);
 
@@ -53,15 +53,15 @@ public class ItemDataHelper {
     }
 
     /**
-     * Synchronizes any new changes in an {@link ItemData} instance with the {@link ItemStack}.
+     * Synchronizes any new changes in an {@link CustomData} instance with the {@link ItemStack}.
      * <br><br>
-     * This method <b>has</b> to be called after you modify your {@link ItemData} instance, or else
+     * This method <b>has</b> to be called after you modify your {@link CustomData} instance, or else
      * your changes will be lost and the state will be reverted next time you use that instance.
      *
      * @param stack The {@link ItemStack}, in whose NBT the data is located in.
-     * @param data The {@link ItemData} instance, to which changes have been made.
+     * @param data The {@link CustomData} instance, to which changes have been made.
      */
-    public static void synchronize(@NotNull ItemStack stack, @NotNull ItemData data) {
+    public static void synchronize(@NotNull ItemStack stack, @NotNull CustomData data) {
         Objects.requireNonNull(stack);
         Objects.requireNonNull(data);
 
@@ -71,15 +71,15 @@ public class ItemDataHelper {
     }
 
     /**
-     * A helper that allows you to make changes to an {@link ItemData} instance, and these changes will
+     * A helper that allows you to make changes to an {@link CustomData} instance, and these changes will
      * <i>automatically</i> be synchronized afterwards.
      *
      * @param stack The {@link ItemStack}, in whose NBT the data is located in.
-     * @param data The {@link ItemData} instance, which you are going to modify.
+     * @param data The {@link CustomData} instance, which you are going to modify.
      * @param usage The lambda {@link Consumer}, in which you can <b>safely</b> make changes to your instance.
-     * @param <T> The type of the {@link ItemData}.
+     * @param <T> The type of the {@link CustomData}.
      */
-    public static <T extends ItemData> void use(@NotNull ItemStack stack, @NotNull T data, @NotNull Consumer<T> usage) {
+    public static <T extends CustomData> void use(@NotNull ItemStack stack, @NotNull T data, @NotNull Consumer<T> usage) {
         Objects.requireNonNull(stack);
         Objects.requireNonNull(data);
         Objects.requireNonNull(usage);

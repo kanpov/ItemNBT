@@ -4,11 +4,11 @@ import net.minecraft.nbt.NbtCompound;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * {@link ItemData} provides you with the means of serializing data within your item.
+ * {@link CustomData} provides you with the means of serializing data within your item.
  * <br><br>
  * Check out usage examples <a href="https://redgrapefruit.gitbook.io/itemnbt/api-examples/itemdata">here</a>
  */
-public interface ItemData {
+public interface CustomData {
     /**
      * @return The name of the category, within which all of your data will be contained.
      */

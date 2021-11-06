@@ -2,6 +2,7 @@ package com.redgrapefruit.itemnbt3.specification;
 
 import com.redgrapefruit.itemnbt3.util.Utilities;
 import net.minecraft.nbt.NbtCompound;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -11,6 +12,13 @@ import java.util.Objects;
 public class Specification {
     private final @NotNull Map<String, TypeSerializer<Object>> rootTree = new HashMap<>();
     private final @NotNull Map<String, Specification> nestedTree = new HashMap<>();
+    private final @NotNull String id;
+
+    public Specification(@NotNull String id) {
+        Objects.requireNonNull(id);
+
+        this.id = id;
+    }
 
     public @NotNull Specification add(@NotNull String key, @NotNull TypeSerializer<Object> serializer) {
         Objects.requireNonNull(key);
@@ -30,13 +38,14 @@ public class Specification {
         return this;
     }
 
+    @ApiStatus.Internal
     public void writeNbt(@NotNull NbtCompound nbt, @NotNull DataCompound compound) {
         Objects.requireNonNull(nbt);
         Objects.requireNonNull(compound);
 
         // Write root tree
         rootTree.forEach((key, serializer) -> {
-            Object value = compound.get(key);
+            final Object value = compound.get(key);
             serializer.writeNbt(key, nbt, value);
         });
 
@@ -47,13 +56,14 @@ public class Specification {
         });
     }
 
+    @ApiStatus.Internal
     public void readNbt(@NotNull NbtCompound nbt, @NotNull DataCompound compound) {
         Objects.requireNonNull(nbt);
         Objects.requireNonNull(compound);
 
         // Read root tree
         rootTree.forEach((key, serializer) -> {
-            Object value = serializer.readNbt(key, nbt);
+            final Object value = serializer.readNbt(key, nbt);
             compound.put(key, value);
         });
 
@@ -62,5 +72,10 @@ public class Specification {
             final NbtCompound subNbt = Utilities.getOrCreateSubNbt(nbt, key);
             spec.readNbt(subNbt, compound.getCompound(key));
         });
+    }
+
+    @ApiStatus.Internal
+    public @NotNull String getId() {
+        return id;
     }
 }
