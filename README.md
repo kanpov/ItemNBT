@@ -1,19 +1,18 @@
 
-# ItemNBT
+# ItemNBT 3.x
 
-ItemNBT is a simple library adding `ItemData` to save & load NBT data for your modded items.
+This is an early-work-in-progress 3rd rewrite of the library.\
+A stable version is expected to be available in Q1 2022.
 
-It's available _exclusively_ for the 1.17.x versions of Minecraft.
+The roadmap is as follows:
 
-## Use
-
-Please read the [GitHub wiki](https://github.com/RedGrapefruit09/ItemNBT/wiki).
-
-## Code
-
-The code is written in Java 16 (AdoptOpenJDK distribution), but is **fully Kotlin-compatible**.\
-This means that you can use this library seamlessly in your Kotlin-powered mods with no nullability issues.
-
-## Contribute
-
-All contributions (pull requests, issues, suggestions etc.) are welcome!
+- [x] Conceptual design
+- [ ] Manual NBT serialization
+- [ ] Specification-based serialization
+- [ ] Reflection-based serialization
+- [ ] Advanced features:
+    - [ ] Serialization events
+    - [ ] Plugin API
+    - [ ] Data preprocessors
+    - [ ] Data postprocessors
+    - [ ] Data fixers
