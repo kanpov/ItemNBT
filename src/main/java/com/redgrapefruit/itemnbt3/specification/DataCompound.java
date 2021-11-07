@@ -28,7 +28,7 @@ public class DataCompound {
         nestedTree.put(key, compound);
     }
 
-    private Object getRaw(@NotNull String key) {
+    private @NotNull Object getRaw(@NotNull String key) {
         Objects.requireNonNull(key);
 
         return rootTree.get(key);
@@ -38,9 +38,21 @@ public class DataCompound {
         return (T) getRaw(key);
     }
 
-    public DataCompound getCompound(@NotNull String key) {
+    public @NotNull DataCompound getCompound(@NotNull String key) {
         Objects.requireNonNull(key);
 
         return nestedTree.get(key);
+    }
+
+    public @NotNull DataCompound getOrCreateCompound(@NotNull String key) {
+        Objects.requireNonNull(key);
+
+        if (nestedTree.containsKey(key)) {
+            return nestedTree.get(key);
+        } else {
+            final DataCompound subCompound = new DataCompound();
+            putCompound(key, subCompound);
+            return subCompound;
+        }
     }
 }

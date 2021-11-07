@@ -47,7 +47,7 @@ public class Specification {
         // Write nested tree
         nestedTree.forEach((key, spec) -> {
             final NbtCompound subNbt = Utilities.getOrCreateSubNbt(nbt, key);
-            spec.writeNbt(subNbt, compound.getCompound(key));
+            spec.writeNbt(subNbt, compound.getOrCreateCompound(key));
         });
     }
 
@@ -65,7 +65,7 @@ public class Specification {
         // Read nested tree
         nestedTree.forEach((key, spec) -> {
             final NbtCompound subNbt = Utilities.getOrCreateSubNbt(nbt, key);
-            spec.readNbt(subNbt, compound.getCompound(key));
+            spec.readNbt(subNbt, compound.getOrCreateCompound(key));
         });
     }
 
@@ -108,51 +108,51 @@ public class Specification {
         }
 
         public @NotNull Builder addByte(@NotNull String key) {
-            return add(key, MappedTypeSerializer.BYTE);
+            return add(key, BuiltinTypeSerializer.BYTE);
         }
 
         public @NotNull Builder addShort(@NotNull String key) {
-            return add(key, MappedTypeSerializer.SHORT);
+            return add(key, BuiltinTypeSerializer.SHORT);
         }
 
         public @NotNull Builder addInt(@NotNull String key) {
-            return add(key, MappedTypeSerializer.INT);
+            return add(key, BuiltinTypeSerializer.INT);
         }
 
         public @NotNull Builder addLong(@NotNull String key) {
-            return add(key, MappedTypeSerializer.LONG);
+            return add(key, BuiltinTypeSerializer.LONG);
         }
 
         public @NotNull Builder addUUID(@NotNull String key) {
-            return add(key, MappedTypeSerializer.UUID);
+            return add(key, BuiltinTypeSerializer.UUID);
         }
 
         public @NotNull Builder addFloat(@NotNull String key) {
-            return add(key, MappedTypeSerializer.FLOAT);
+            return add(key, BuiltinTypeSerializer.FLOAT);
         }
 
         public @NotNull Builder addDouble(@NotNull String key) {
-            return add(key, MappedTypeSerializer.DOUBLE);
+            return add(key, BuiltinTypeSerializer.DOUBLE);
         }
 
         public @NotNull Builder addString(@NotNull String key) {
-            return add(key, MappedTypeSerializer.STRING);
+            return add(key, BuiltinTypeSerializer.STRING);
         }
 
         public @NotNull Builder addByteArray(@NotNull String key) {
-            return add(key, MappedTypeSerializer.BYTE_ARRAY);
+            return add(key, BuiltinTypeSerializer.BYTE_ARRAY);
         }
 
         public @NotNull Builder addIntArray(@NotNull String key) {
-            return add(key, MappedTypeSerializer.INT_ARRAY);
+            return add(key, BuiltinTypeSerializer.INT_ARRAY);
         }
 
         public @NotNull Builder addLongArray(@NotNull String key) {
-            return add(key, MappedTypeSerializer.LONG_ARRAY);
+            return add(key, BuiltinTypeSerializer.LONG_ARRAY);
         }
 
         public @NotNull Builder addBool(@NotNull String key) {
-            return add(key, MappedTypeSerializer.BOOL);
+            return add(key, BuiltinTypeSerializer.BOOL);
         }
 
         public @NotNull Specification build() {
