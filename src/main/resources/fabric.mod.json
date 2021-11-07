@@ -12,11 +12,7 @@
     },
     "license": "MIT",
     "environment": "*",
-    "entrypoints": {
-        "main": [
-            "com.redgrapefruit.itemnbt3.testmod.TestMod"
-        ]
-    },
+    "entrypoints": {},
     "mixins": [
         "itemnbt.mixins.json"
     ],

@@ -5,8 +5,6 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * {@link CustomData} provides you with the means of serializing data within your item.
- * <br><br>
- * Check out usage examples <a href="https://redgrapefruit.gitbook.io/itemnbt/api-examples/itemdata">here</a>
  */
 public interface CustomData {
     /**

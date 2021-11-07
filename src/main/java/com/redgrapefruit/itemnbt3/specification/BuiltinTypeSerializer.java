@@ -8,6 +8,11 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.function.BiFunction;
 
+/**
+ * A {@link BuiltinTypeSerializer} is a {@link TypeSerializer} implementation that invokes the lambdas passed into it.
+ *
+ * @param <T> The data type that this serializer handles.
+ */
 public class BuiltinTypeSerializer<T> implements TypeSerializer<T> {
     private final @NotNull TriConsumer<NbtCompound, String, T> writer;
     private final @NotNull BiFunction<NbtCompound, String, T> reader;
@@ -33,6 +38,8 @@ public class BuiltinTypeSerializer<T> implements TypeSerializer<T> {
         //noinspection ConstantConditions
         writer.accept(nbt, key, value == null ? fallback : value);
     }
+
+    // Built-in serializers covered by the NbtCompound
 
     public static final @NotNull BuiltinTypeSerializer<Byte> BYTE = new BuiltinTypeSerializer<>(NbtCompound::putByte, NbtCompound::getByte, (byte)0);
     public static final @NotNull BuiltinTypeSerializer<Short> SHORT = new BuiltinTypeSerializer<>(NbtCompound::putShort, NbtCompound::getShort, (short)0);

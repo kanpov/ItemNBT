@@ -11,8 +11,6 @@ import java.util.function.Supplier;
 
 /**
  * The {@link CustomDataClient} provides several key operations for working with {@link CustomData} instances.
- * <br><br>
- * Check out usage examples <a href="https://redgrapefruit.gitbook.io/itemnbt/api-examples/itemdatahelper">here</a>
  */
 public class CustomDataClient {
     // ItemDataHelper is static

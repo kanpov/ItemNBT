@@ -12,6 +12,13 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * The {@link SerializerRegistry} is a place to register your {@link TypeSerializer}s in order for the
+ * experimental {@link SpecificationGenerator} to see them.
+ * <br><br>
+ * If a type is a <b>composite type</b>: can be broken down into primitives/already-handled-types/other-composite-types,
+ * a serializer for it is not needed.
+ */
 public class SerializerRegistry {
     private static final @NotNull Map<Class<?>, TypeSerializer<?>> registry = new HashMap<>();
 
@@ -36,6 +43,13 @@ public class SerializerRegistry {
         throw new RuntimeException("SerializerRegistry is not meant to be instantiated.");
     }
 
+    /**
+     * Registers a custom serializer for a non-composite type.
+     *
+     * @param clazz The class of the non-composite type.
+     * @param serializer The serializer for that type.
+     * @param <T> That type in generics.
+     */
     public static <T> void register(@NotNull Class<T> clazz, @NotNull TypeSerializer<T> serializer) {
         Objects.requireNonNull(clazz);
         Objects.requireNonNull(serializer);
