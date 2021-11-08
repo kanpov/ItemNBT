@@ -1,11 +1,15 @@
 package com.redgrapefruit.itemnbt3.specification;
 
 import com.redgrapefruit.itemnbt3.custom.CustomData;
+import com.redgrapefruit.itemnbt3.serializer.BuiltinTypeSerializer;
+import com.redgrapefruit.itemnbt3.serializer.TypeSerializer;
+import com.redgrapefruit.itemnbt3.serializer.SerializerRegistry;
 import com.redgrapefruit.itemnbt3.util.Utilities;
 import net.minecraft.nbt.NbtCompound;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -103,6 +107,24 @@ public class Specification {
      */
     public static @NotNull Builder builder(@NotNull String id) {
         return new Builder(id);
+    }
+
+    @ApiStatus.Experimental
+    public static @NotNull Specification create(@NotNull Class<?> clazz) {
+        Objects.requireNonNull(clazz);
+
+        final Specification spec = new Specification(clazz.getSimpleName());
+
+        for (Field field : clazz.getDeclaredFields()) {
+            if (SerializerRegistry.contains(field.getType())) {
+                final TypeSerializer<?> serializer = SerializerRegistry.get(field.getType());
+                spec.add(field.getName(), serializer);
+            } else {
+                spec.add(field.getName(), create(field.getType()));
+            }
+        }
+
+        return spec;
     }
 
     /**

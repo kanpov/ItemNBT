@@ -1,4 +1,4 @@
-package com.redgrapefruit.itemnbt3.specification;
+package com.redgrapefruit.itemnbt3.serializer;
 
 import net.minecraft.nbt.NbtCompound;
 import org.jetbrains.annotations.NotNull;

@@ -1,7 +1,5 @@
-package com.redgrapefruit.itemnbt3.specification.generation;
+package com.redgrapefruit.itemnbt3.serializer;
 
-import com.redgrapefruit.itemnbt3.specification.BuiltinTypeSerializer;
-import com.redgrapefruit.itemnbt3.specification.TypeSerializer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.ApiStatus;
@@ -13,8 +11,8 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * The {@link SerializerRegistry} is a place to register your {@link TypeSerializer}s in order for the
- * experimental {@link SpecificationGenerator} to see them.
+ * The {@link SerializerRegistry} is a place to register your {@link TypeSerializer}s in order to be used
+ * in auto-generation.
  * <br><br>
  * If a type is a <b>composite type</b>: can be broken down into primitives/already-handled-types/other-composite-types,
  * a serializer for it is not needed.
