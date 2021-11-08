@@ -1,4 +1,4 @@
-package com.redgrapefruit.itemnbt3.transfer;
+package com.redgrapefruit.itemnbt3.specification.linking;
 
 import com.redgrapefruit.itemnbt3.specification.DataCompound;
 import net.minecraft.util.Pair;
@@ -13,27 +13,26 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-public class DataTransfer {
+public class DataLinker {
     private final @NotNull Map<String, Pair<Method, Method>> rootTree = new HashMap<>();
-    private final @NotNull Map<String, Pair<Method, DataTransfer>> nestedTree = new HashMap<>();
+    private final @NotNull Map<String, Pair<Method, DataLinker>> nestedTree = new HashMap<>();
     private final @NotNull Supplier<Object> factory;
 
     private static final @NotNull Logger LOGGER = LogManager.getLogger();
 
-    public DataTransfer(@NotNull Supplier<Object> factory) {
+    public DataLinker(@NotNull Supplier<Object> factory) {
         this.factory = factory;
     }
 
-    public void add(@NotNull String key, @NotNull Method getter, @NotNull Method setter, @NotNull Supplier<Object> factory) {
+    public void add(@NotNull String key, @NotNull Method getter, @NotNull Method setter) {
         Objects.requireNonNull(key);
         Objects.requireNonNull(getter);
         Objects.requireNonNull(setter);
-        Objects.requireNonNull(factory);
 
         rootTree.put(key, new Pair<>(getter, setter));
     }
 
-    public void add(@NotNull String key, @NotNull Method getter, @NotNull DataTransfer model) {
+    public void add(@NotNull String key, @NotNull Method getter, @NotNull DataLinker model) {
         Objects.requireNonNull(key);
         Objects.requireNonNull(model);
 
@@ -55,7 +54,7 @@ public class DataTransfer {
         });
 
         nestedTree.forEach((key, pair) -> {
-            final DataTransfer model = pair.getRight();
+            final DataLinker model = pair.getRight();
 
             final DataCompound subCompound = compound.getOrCreateCompound(key);
             model.fromCompound(subCompound, model.getFactory().get());
@@ -103,5 +102,61 @@ public class DataTransfer {
 
     public @NotNull Supplier<Object> getFactory() {
         return factory;
+    }
+
+    public static @NotNull DataLinker create(@NotNull Class<?> clazz) {
+        Objects.requireNonNull(clazz);
+
+        // Use first declared constructor for factory supplier
+        final DataLinker linker = new DataLinker(() -> {
+            try {
+                return clazz.getDeclaredConstructors()[0].newInstance();
+            } catch (Exception e) {
+                throw new RuntimeException();
+            }
+        });
+
+        final Map<String, Pair<Method, Method>> finds = new HashMap<>();
+
+        // Scan methods
+        for (Method method : clazz.getDeclaredMethods()) {
+            if (method.isAnnotationPresent(Getter.class)) {
+                final Getter annotation = method.getAnnotation(Getter.class);
+
+                Pair<Method, Method> pair = finds.get(annotation.to());
+
+                if (pair == null) {
+                    pair = new Pair<>(method, null);
+                } else {
+                    pair.setLeft(method);
+                }
+
+                finds.put(annotation.to(), pair);
+            }
+
+            if (method.isAnnotationPresent(Setter.class)) {
+                final Setter annotation = method.getAnnotation(Setter.class);
+
+                Pair<Method, Method> pair = finds.get(annotation.to());
+
+                if (pair == null) {
+                    pair = new Pair<>(null, method);
+                } else {
+                    pair.setRight(method);
+                }
+
+                finds.put(annotation.to(), pair);
+            }
+        }
+
+        finds.forEach((key, pair) -> {
+            if (pair.getLeft() == null || pair.getRight() == null) {
+                throw new RuntimeException("Failed to generate linker with the means of reflection");
+            }
+
+            linker.add(key, pair.getLeft(), pair.getRight());
+        });
+
+        return linker;
     }
 }

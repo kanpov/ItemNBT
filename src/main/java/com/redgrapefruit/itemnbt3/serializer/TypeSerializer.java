@@ -20,7 +20,7 @@ public interface TypeSerializer<T> {
     T readNbt(@NotNull String key, @NotNull NbtCompound nbt);
 
     /**
-     * Writes your data type into its NBT representation.
+     * Write your data type into its NBT representation.
      *
      * @param key The NBT key, under which the data type will be stored.
      * @param nbt The {@link NbtCompound}, to which you should write your data.

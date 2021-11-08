@@ -10,7 +10,7 @@ import java.util.UUID;
 /**
  * A {@link DataCompound} is the result of serialization via a {@link Specification}.
  * <br><br>
- * It is a very simple wrapper around a map for normal data and another map for nested {@link DataCompound}.
+ * It is a very simple wrapper around a map for normal data and another map for nested {@link DataCompound}s.
  */
 public class DataCompound {
     private final @NotNull Map<String, Object> rootTree = new HashMap<>();
