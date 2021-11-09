@@ -2,7 +2,7 @@
 # ItemNBT 3.x
 
 This is an early-work-in-progress 3rd rewrite of the library.\
-A stable version is expected to be available in Q1 2022.
+A stable version is expected to be available in November 2021.
 
 The roadmap is as follows:
 
@@ -10,13 +10,7 @@ The roadmap is as follows:
 - [x] Manual NBT serialization
 - [x] Specification-based serialization
 - [x] Linked-specification-based serialization
-- [ ] Out-of-the-box collections
-- [ ] Advanced features:
-    - [ ] Serialization events
-    - [ ] Plugin API
-    - [ ] Data preprocessors
-    - [ ] Data postprocessors
-    - [ ] Data fixers
+- [ ] Serialization events
 
 ## Use
 

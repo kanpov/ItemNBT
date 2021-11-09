@@ -1,5 +1,8 @@
 package com.redgrapefruit.itemnbt3;
 
+import com.redgrapefruit.itemnbt3.event.DeserializationEvents;
+import com.redgrapefruit.itemnbt3.event.LinkingEvents;
+import com.redgrapefruit.itemnbt3.event.SerializationEvents;
 import com.redgrapefruit.itemnbt3.specification.DataCompound;
 import com.redgrapefruit.itemnbt3.specification.Specification;
 import com.redgrapefruit.itemnbt3.linking.DataLink;
@@ -30,10 +33,15 @@ public class DataClient {
         // If the data has not been initialized yet, write in the default data
         if (nbt.isEmpty()) {
             ((NbtCompoundMixinAccess) nbt).clearNbt();
+
+            SerializationEvents.CUSTOM_PRE_SERIALIZE.invoker().event(stack, nbt);
             instance.writeNbt(nbt);
+            SerializationEvents.CUSTOM_POST_SERIALIZE.invoker().event(stack, nbt);
         }
 
+        DeserializationEvents.CUSTOM_PRE_DESERIALIZE.invoker().event(stack, nbt);
         instance.readNbt(nbt);
+        DeserializationEvents.CUSTOM_POST_DESERIALIZE.invoker().event(stack, nbt);
     }
 
     /**
@@ -56,7 +64,10 @@ public class DataClient {
         // Sync
         final NbtCompound nbt = stack.getOrCreateSubNbt(instance.getNbtCategory());
         ((NbtCompoundMixinAccess) nbt).clearNbt();
+
+        SerializationEvents.CUSTOM_PRE_SERIALIZE.invoker().event(stack, nbt);
         instance.writeNbt(nbt);
+        SerializationEvents.CUSTOM_POST_SERIALIZE.invoker().event(stack, nbt);
     }
 
     /**
@@ -76,13 +87,22 @@ public class DataClient {
 
         if (subNbt.isEmpty()) {
             ((NbtCompoundMixinAccess) subNbt).clearNbt();
+
+            SerializationEvents.DEFAULT_PRE_SERIALIZE.invoker().event(stack, specification, subNbt, compound);
             specification.writeNbt(subNbt, compound);
+            SerializationEvents.DEFAULT_POST_SERIALIZE.invoker().event(stack, specification, subNbt, compound);
         }
 
+        DeserializationEvents.DEFAULT_PRE_DESERIALIZE.invoker().event(stack, specification, subNbt, compound);
         specification.readNbt(subNbt, compound);
+        DeserializationEvents.DEFAULT_POST_DESERIALIZE.invoker().event(stack, specification, subNbt, compound);
+
         action.accept(compound);
         ((NbtCompoundMixinAccess) subNbt).clearNbt();
+
+        SerializationEvents.DEFAULT_PRE_SERIALIZE.invoker().event(stack, specification, subNbt, compound);
         specification.writeNbt(subNbt, compound);
+        SerializationEvents.DEFAULT_POST_SERIALIZE.invoker().event(stack, specification, subNbt, compound);
     }
 
     /**
@@ -106,14 +126,30 @@ public class DataClient {
 
         if (subNbt.isEmpty()) {
             ((NbtCompoundMixinAccess) subNbt).clearNbt();
+
+            SerializationEvents.LINKED_PRE_SERIALIZE.invoker().event(stack, specification, subNbt, compound, instance);
             specification.writeNbt(subNbt, compound);
+            SerializationEvents.LINKED_POST_SERIALIZE.invoker().event(stack, specification, subNbt, compound, instance);
         }
 
+        DeserializationEvents.LINKED_PRE_DESERIALIZE.invoker().event(stack, specification, subNbt, compound, instance);
         specification.readNbt(subNbt, compound);
+        DeserializationEvents.LINKED_POST_DESERIALIZE.invoker().event(stack, specification, subNbt, compound, instance);
+
+        LinkingEvents.PRE_FORWARD_LINK.invoker().event(stack, specification, subNbt, compound, instance);
         link.forwardLink(compound, instance);
+        LinkingEvents.POST_FORWARD_LINK.invoker().event(stack, specification, subNbt, compound, instance);
+
         action.accept(instance);
+
+        LinkingEvents.PRE_BACKWARD_LINK.invoker().event(stack, specification, subNbt, compound, instance);
         link.backwardLink(compound, instance);
+        LinkingEvents.POST_BACKWARD_LINK.invoker().event(stack, specification, subNbt, compound, instance);
+
         ((NbtCompoundMixinAccess) subNbt).clearNbt();
+
+        SerializationEvents.LINKED_PRE_SERIALIZE.invoker().event(stack, specification, subNbt, compound, instance);
         specification.writeNbt(subNbt, compound);
+        SerializationEvents.LINKED_POST_SERIALIZE.invoker().event(stack, specification, subNbt, compound, instance);
     }
 }
