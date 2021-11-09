@@ -1,6 +1,6 @@
 package com.redgrapefruit.itemnbt3.specification;
 
-import com.redgrapefruit.itemnbt3.custom.CustomData;
+import com.redgrapefruit.itemnbt3.CustomData;
 import com.redgrapefruit.itemnbt3.serializer.BuiltinTypeSerializer;
 import com.redgrapefruit.itemnbt3.serializer.TypeSerializer;
 import com.redgrapefruit.itemnbt3.serializer.SerializerRegistry;
