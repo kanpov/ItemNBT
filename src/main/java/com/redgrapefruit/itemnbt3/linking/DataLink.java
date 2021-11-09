@@ -1,4 +1,4 @@
-package com.redgrapefruit.itemnbt3.specification.linking;
+package com.redgrapefruit.itemnbt3.linking;
 
 import com.redgrapefruit.itemnbt3.serializer.SerializerRegistry;
 import com.redgrapefruit.itemnbt3.specification.DataCompound;
@@ -15,19 +15,20 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
 
+/**
+ * A {@link DataLink} ports your serialized data from a {@link DataCompound} to a Java POJO.
+ */
 public class DataLink {
     private final @NotNull Map<String, Field> fields = new HashMap<>();
     private final @NotNull Map<String, Field> composites = new HashMap<>();
-    private final @NotNull Supplier<Object> factory;
 
     private static final @NotNull Logger LOGGER = LogManager.getLogger();
-
-    public DataLink(@NotNull Supplier<Object> factory) {
-        Objects.requireNonNull(factory);
-
-        this.factory = factory;
-    }
-
+    /**
+     * Adds a regular field to the link.
+     *
+     * @param address The NBT address of the field.
+     * @param field The reflect-field.
+     */
     public void addField(@NotNull String address, @NotNull Field field) {
         Objects.requireNonNull(address);
         Objects.requireNonNull(field);
@@ -35,6 +36,12 @@ public class DataLink {
         fields.put(address, field);
     }
 
+    /**
+     * Adds a composite field to the link.
+     *
+     * @param address The NBT address of the field.
+     * @param field The reflect-field.
+     */
     public void addComposite(@NotNull String address, @NotNull Field field) {
         Objects.requireNonNull(address);
         Objects.requireNonNull(field);
@@ -42,6 +49,12 @@ public class DataLink {
         composites.put(address, field);
     }
 
+    /**
+     * Ports the data from a {@link DataCompound} to a POJO.
+     *
+     * @param data The {@link DataCompound} with the original data.
+     * @param instance The POJO instance.
+     */
     public void forwardLink(@NotNull DataCompound data, @NotNull Object instance) {
         fields.forEach((key, field) -> {
             try {
@@ -81,6 +94,12 @@ public class DataLink {
         });
     }
 
+    /**
+     * Ports the data from a POJO back into the {@link DataCompound}.
+     *
+     * @param data The target {@link DataCompound}.
+     * @param instance The POJO instance.
+     */
     public void backwardLink(@NotNull DataCompound data, @NotNull Object instance) {
         fields.forEach((key, field) -> {
             Object value = null;
@@ -126,10 +145,12 @@ public class DataLink {
         });
     }
 
-    public @NotNull Supplier<Object> getFactory() {
-        return factory;
-    }
-
+    /**
+     * Automatically generates a {@link DataLink} using Java Reflection and registers it in {@link DataLinkLookup}.
+     *
+     * @param clazz The target POJO's class.
+     * @return The generated {@link DataLink}.
+     */
     public static @NotNull DataLink create(@NotNull Class<?> clazz) {
         Objects.requireNonNull(clazz);
 
@@ -141,7 +162,7 @@ public class DataLink {
     }
 
     private static @NotNull DataLink createAutomatic(@NotNull Class<?> clazz) {
-        final DataLink link = new DataLink(createFactoryFromFirstConstructor(clazz));
+        final DataLink link = new DataLink();
 
         for (Field field : clazz.getDeclaredFields()) {
             if (!Modifier.isPublic(field.getModifiers())) continue;
@@ -158,20 +179,18 @@ public class DataLink {
     }
 
     private static @NotNull DataLink createManual(@NotNull Class<?> clazz) {
-        final DataLink link = new DataLink(createFactoryFromFirstConstructor(clazz));
+        final DataLink link = new DataLink();
 
         for (Field field : clazz.getDeclaredFields()) {
             if (!Modifier.isPublic(field.getModifiers())) continue;
 
             // Um yeah, name conflicts are bad
-            if (field.isAnnotationPresent(com.redgrapefruit.itemnbt3.specification.linking.Field.class)) {
-                final com.redgrapefruit.itemnbt3.specification.linking.Field annotation = field.getAnnotation(com.redgrapefruit.itemnbt3.specification.linking.Field.class);
-                link.addField(annotation.from(), field);
+            if (field.isAnnotationPresent(com.redgrapefruit.itemnbt3.linking.Field.class)) {
+                link.addField(field.getName(), field);
             }
 
             if (field.isAnnotationPresent(Composite.class)) {
-                final Composite annotation = field.getAnnotation(Composite.class);
-                link.addComposite(annotation.from(), field);
+                link.addComposite(field.getName(), field);
             }
         }
 

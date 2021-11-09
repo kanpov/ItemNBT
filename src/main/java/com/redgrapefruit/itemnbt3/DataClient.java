@@ -2,7 +2,7 @@ package com.redgrapefruit.itemnbt3;
 
 import com.redgrapefruit.itemnbt3.specification.DataCompound;
 import com.redgrapefruit.itemnbt3.specification.Specification;
-import com.redgrapefruit.itemnbt3.specification.linking.DataLink;
+import com.redgrapefruit.itemnbt3.linking.DataLink;
 import com.redgrapefruit.itemnbt3.util.NbtCompoundMixinAccess;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -12,6 +12,10 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+/**
+ * The {@link DataClient} is a hub for all operations in the ItemNBT3 library.<br>
+ * It connects all serialization types together for you to use.
+ */
 public class DataClient {
     private DataClient() {
         throw new RuntimeException("DataClient is not meant to be instantiated");
@@ -32,6 +36,14 @@ public class DataClient {
         instance.readNbt(nbt);
     }
 
+    /**
+     * Gives you access to the custom-serialization method.
+     *
+     * @param factory Factory for creating the {@link CustomData} instance.
+     * @param stack The {@link ItemStack}, whose NBT has the necessary data.
+     * @param action The action lambda, where you can interact with the data and do whatever.
+     * @param <T> The generic type of the {@link CustomData}.
+     */
     public static <T extends CustomData> void use(@NotNull Supplier<T> factory, @NotNull ItemStack stack, @NotNull Consumer<T> action) {
         Objects.requireNonNull(factory);
         Objects.requireNonNull(stack);
@@ -47,6 +59,13 @@ public class DataClient {
         instance.writeNbt(nbt);
     }
 
+    /**
+     * Gives you data to the specification-based serialization method.
+     *
+     * @param stack The {@link ItemStack}, whose NBT has the data.
+     * @param specification The specification to serialize with.
+     * @param action The lambda action where you can interact with the {@link DataCompound}.
+     */
     public static void use(@NotNull ItemStack stack, @NotNull Specification specification, @NotNull Consumer<DataCompound> action) {
         Objects.requireNonNull(stack);
         Objects.requireNonNull(specification);
@@ -66,6 +85,16 @@ public class DataClient {
         specification.writeNbt(subNbt, compound);
     }
 
+    /**
+     * Gives you access to the linked-specification-based serialization method.
+     *
+     * @param stack The {@link ItemStack}, whose NBT has the data.
+     * @param specification The specification to get the {@link DataCompound} with.
+     * @param link The {@link DataLink} to link up the {@link DataCompound} to the instance.
+     * @param instance The object instance.
+     * @param action The lambda action, where you can interact with the object instance.
+     * @param <T> The generic object type.
+     */
     public static <T> void use(@NotNull ItemStack stack, @NotNull Specification specification, @NotNull DataLink link, @NotNull T instance, @NotNull Consumer<T> action) {
         Objects.requireNonNull(stack);
         Objects.requireNonNull(specification);

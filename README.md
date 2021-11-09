@@ -9,7 +9,7 @@ The roadmap is as follows:
 - [x] Conceptual design
 - [x] Manual NBT serialization
 - [x] Specification-based serialization
-- [ ] Linked-specification-based serialization
+- [x] Linked-specification-based serialization
 - [ ] Out-of-the-box collections
 - [ ] Advanced features:
     - [ ] Serialization events
