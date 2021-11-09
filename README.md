@@ -22,7 +22,7 @@ The roadmap is as follows:
 
 The library is **not ready** for usage yet, but early alphas are already available.
 
-The latest alpha release is: `3.0-alpha.2`.
+The latest alpha release is: `3.0-alpha.3`.
 
 Include this in your `build.gradle`:
 ```groovy
@@ -36,7 +36,7 @@ repositories {
 }
 
 dependencies {
-  modImplementation "com.redgrapefruit.itemnbt:itemnbt:3.0-alpha.2"
-  include "com.redgrapefruit.itemnbt:itemnbt:3.0-alpha.2"
+  modImplementation "com.redgrapefruit.itemnbt:itemnbt:3.0-alpha.3"
+  include "com.redgrapefruit.itemnbt:itemnbt:3.0-alpha.3"
 }
 ```
