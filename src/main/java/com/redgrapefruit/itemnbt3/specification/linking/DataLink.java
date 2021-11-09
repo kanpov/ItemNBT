@@ -5,6 +5,7 @@ import com.redgrapefruit.itemnbt3.specification.DataCompound;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -50,7 +51,34 @@ public class DataLink {
             }
         });
 
-        // TODO: Composites
+        composites.forEach((key, field) -> {
+            final Class<?> otherClazz = field.getType();
+
+            if (DataLinkLookup.lacks(otherClazz)) {
+                LOGGER.error("Trying to lookup non-existing DataLink for field " + field.getName() + " of type " + otherClazz.getSimpleName());
+            }
+
+            final DataLink otherLink = DataLinkLookup.get(otherClazz);
+            final DataCompound otherCompound = data.getOrCreateCompound(key);
+            Object otherInstance = null;
+
+            try {
+                otherInstance = field.get(instance);
+            } catch (IllegalAccessException e) {
+                LOGGER.error("Could not forward-link composite field " + field.getName() + ". Illegal access, make it public!");
+            }
+
+            otherInstance = fallbackField(otherInstance, otherClazz);
+            Objects.requireNonNull(otherInstance);
+
+            otherLink.forwardLink(otherCompound, otherInstance);
+
+            try {
+                field.set(instance, otherInstance);
+            } catch (IllegalAccessException e) {
+                LOGGER.error("Could not forward-link composite field " + field.getName() + ". Illegal access, make it public!");
+            }
+        });
     }
 
     public void backwardLink(@NotNull DataCompound data, @NotNull Object instance) {
@@ -68,7 +96,34 @@ public class DataLink {
             data.put(key, value);
         });
 
-        // TODO: Composites
+        composites.forEach((key, field) -> {
+            final Class<?> otherClazz = field.getType();
+
+            if (DataLinkLookup.lacks(otherClazz)) {
+                LOGGER.error("Trying to lookup non-existing DataLink for field " + field.getName() + " of type " + otherClazz.getSimpleName());
+            }
+
+            final DataLink otherLink = DataLinkLookup.get(otherClazz);
+            final DataCompound otherCompound = data.getOrCreateCompound(key);
+            Object otherInstance = null;
+
+            try {
+                otherInstance = field.get(instance);
+            } catch (IllegalAccessException e) {
+                LOGGER.error("Could not forward-link composite field " + field.getName() + ". Illegal access, make it public!");
+            }
+
+            otherInstance = fallbackField(otherInstance, otherClazz);
+            Objects.requireNonNull(otherInstance);
+
+            otherLink.backwardLink(otherCompound, otherInstance);
+
+            try {
+                field.set(instance, otherInstance);
+            } catch (IllegalAccessException e) {
+                LOGGER.error("Could not forward-link composite field " + field.getName() + ". Illegal access, make it public!");
+            }
+        });
     }
 
     public @NotNull Supplier<Object> getFactory() {
@@ -98,6 +153,7 @@ public class DataLink {
             }
         }
 
+        DataLinkLookup.register(clazz, link);
         return link;
     }
 
@@ -119,6 +175,7 @@ public class DataLink {
             }
         }
 
+        DataLinkLookup.register(clazz, link);
         return link;
     }
 
@@ -130,5 +187,15 @@ public class DataLink {
                 throw new RuntimeException("Reflective generation of a data link failed while creating factory from constructor");
             }
         };
+    }
+
+    private static Object fallbackField(@Nullable Object value, @NotNull Class<?> clazz) {
+        final Supplier<Object> fallback = createFactoryFromFirstConstructor(clazz);
+
+        if (value == null) {
+            value = fallback.get();
+        }
+
+        return value;
     }
 }
