@@ -1,24 +1,14 @@
 
 # ItemNBT 3.x
 
-This is an early-work-in-progress 3rd rewrite of the library.\
-A stable version is expected to be available in November 2021.
+This is the branch for the active rewrite of ItemNBT to ItemNBT3.
 
-The roadmap is as follows:
-
-- [x] Conceptual design
-- [x] Manual NBT serialization
-- [x] Specification-based serialization
-- [x] Linked-specification-based serialization
-- [ ] Serialization events
+All core features have already been delivered, a stable release will be packaged after I finish all the docs.
 
 ## Use
 
-The library is **not ready** for usage yet, but early alphas are already available.
+To preview the library, add this code into your `build.gradle`:
 
-The latest alpha release is: `3.0-alpha.3`.
-
-Include this in your `build.gradle`:
 ```groovy
 repositories {
   maven {
@@ -30,7 +20,7 @@ repositories {
 }
 
 dependencies {
-  modImplementation "com.redgrapefruit.itemnbt:itemnbt:3.0-alpha.3"
-  include "com.redgrapefruit.itemnbt:itemnbt:3.0-alpha.3"
+  modImplementation "com.redgrapefruit.itemnbt:itemnbt:3.0-alpha.4"
+  include "com.redgrapefruit.itemnbt:itemnbt:3.0-alpha.4"
 }
 ```

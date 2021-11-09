@@ -8,7 +8,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * A set of built-in Fabric events for serialization
+ */
 public class SerializationEvents {
+    // Called before serializing custom data
     public static final Event<CustomEvent> CUSTOM_PRE_SERIALIZE = EventFactory.createArrayBacked(CustomEvent.class,
         (listeners) -> (stack, nbt) -> {
             for (CustomEvent listener : listeners) {
@@ -17,6 +21,7 @@ public class SerializationEvents {
         }
     );
 
+    // Called after serializing custom data
     public static final Event<CustomEvent> CUSTOM_POST_SERIALIZE = EventFactory.createArrayBacked(CustomEvent.class,
             (listeners) -> (stack, nbt) -> {
                 for (CustomEvent listener : listeners) {
@@ -25,6 +30,7 @@ public class SerializationEvents {
             }
     );
 
+    // Called before serializing DataCompounds
     public static final Event<DefaultEvent> DEFAULT_PRE_SERIALIZE = EventFactory.createArrayBacked(DefaultEvent.class,
             (listeners) -> (stack, spec, nbt, data) -> {
                 for (DefaultEvent listener : listeners) {
@@ -33,6 +39,7 @@ public class SerializationEvents {
             }
     );
 
+    // Called after serializing DataCompounds
     public static final Event<DefaultEvent> DEFAULT_POST_SERIALIZE = EventFactory.createArrayBacked(DefaultEvent.class,
             (listeners) -> (stack, spec, nbt, data) -> {
                 for (DefaultEvent listener : listeners) {
@@ -41,6 +48,7 @@ public class SerializationEvents {
             }
     );
 
+    // Called before serializing linked DataCompounds
     public static final Event<LinkedEvent> LINKED_PRE_SERIALIZE = EventFactory.createArrayBacked(LinkedEvent.class,
             (listeners) -> (stack, spec, nbt, data, instance) -> {
                 for (LinkedEvent listener : listeners) {
@@ -49,6 +57,7 @@ public class SerializationEvents {
             }
     );
 
+    // Called after serializing linked DataCompounds
     public static final Event<LinkedEvent> LINKED_POST_SERIALIZE = EventFactory.createArrayBacked(LinkedEvent.class,
             (listeners) -> (stack, spec, nbt, data, instance) -> {
                 for (LinkedEvent listener : listeners) {
