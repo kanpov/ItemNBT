@@ -1,6 +1,9 @@
 package com.redgrapefruit.itemnbt3.specification;
 
 import com.redgrapefruit.itemnbt3.CustomData;
+import com.redgrapefruit.itemnbt3.linking.AllowInheritance;
+import com.redgrapefruit.itemnbt3.linking.Auto;
+import com.redgrapefruit.itemnbt3.linking.Composite;
 import com.redgrapefruit.itemnbt3.serializer.BuiltinTypeSerializer;
 import com.redgrapefruit.itemnbt3.serializer.TypeSerializer;
 import com.redgrapefruit.itemnbt3.serializer.SerializerRegistry;
@@ -10,6 +13,7 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -109,18 +113,63 @@ public class Specification {
         return new Builder(id);
     }
 
-    @ApiStatus.Experimental
     public static @NotNull Specification create(@NotNull Class<?> clazz) {
         Objects.requireNonNull(clazz);
 
+        if (clazz.isAnnotationPresent(Auto.class)) {
+            return createAutomatic(clazz);
+        } else {
+            return createManual(clazz);
+        }
+    }
+
+    private static @NotNull Specification createAutomatic(@NotNull Class<?> clazz) {
         final Specification spec = new Specification(clazz.getSimpleName());
 
-        for (Field field : clazz.getDeclaredFields()) {
+        final Field[] fields = clazz.isAnnotationPresent(AllowInheritance.class) ? clazz.getFields() : clazz.getDeclaredFields();
+
+        for (Field field : fields) {
+            if (!Modifier.isPublic(field.getModifiers())) continue;
+
             if (SerializerRegistry.contains(field.getType())) {
                 final TypeSerializer<?> serializer = SerializerRegistry.get(field.getType());
                 spec.add(field.getName(), serializer);
             } else {
                 spec.add(field.getName(), create(field.getType()));
+            }
+        }
+
+        return spec;
+    }
+
+    private static @NotNull Specification createManual(@NotNull Class<?> clazz) {
+        final Specification spec = new Specification(clazz.getSimpleName());
+
+        final Field[] fields = clazz.isAnnotationPresent(AllowInheritance.class) ? clazz.getFields() : clazz.getDeclaredFields();
+
+        for (Field field : fields) {
+            if (!Modifier.isPublic(field.getModifiers())) continue;
+
+            if (field.isAnnotationPresent(com.redgrapefruit.itemnbt3.linking.Field.class)) {
+                final com.redgrapefruit.itemnbt3.linking.Field annotation = field.getAnnotation(com.redgrapefruit.itemnbt3.linking.Field.class);
+
+                String name = annotation.name();
+                if (annotation.name().equals("^NULL")) {
+                    name = field.getName();
+                }
+
+                spec.add(name, SerializerRegistry.get(field.getType()));
+            }
+
+            if (field.isAnnotationPresent(Composite.class)) {
+                final Composite annotation = field.getAnnotation(Composite.class);
+
+                String name = annotation.name();
+                if (annotation.name().equals("^NULL")) {
+                    name = field.getName();
+                }
+
+                spec.add(name, create(field.getType()));
             }
         }
 

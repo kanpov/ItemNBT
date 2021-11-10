@@ -164,7 +164,9 @@ public class DataLink {
     private static @NotNull DataLink createAutomatic(@NotNull Class<?> clazz) {
         final DataLink link = new DataLink();
 
-        for (Field field : clazz.getDeclaredFields()) {
+        final Field[] fields = clazz.isAnnotationPresent(AllowInheritance.class) ? clazz.getFields() : clazz.getDeclaredFields();
+
+        for (Field field : fields) {
             if (!Modifier.isPublic(field.getModifiers())) continue;
 
             if (SerializerRegistry.contains(field.getType())) {
@@ -181,16 +183,32 @@ public class DataLink {
     private static @NotNull DataLink createManual(@NotNull Class<?> clazz) {
         final DataLink link = new DataLink();
 
-        for (Field field : clazz.getDeclaredFields()) {
+        final Field[] fields = clazz.isAnnotationPresent(AllowInheritance.class) ? clazz.getFields() : clazz.getDeclaredFields();
+
+        for (Field field : fields) {
             if (!Modifier.isPublic(field.getModifiers())) continue;
 
             // Um yeah, name conflicts are bad
             if (field.isAnnotationPresent(com.redgrapefruit.itemnbt3.linking.Field.class)) {
-                link.addField(field.getName(), field);
+                final com.redgrapefruit.itemnbt3.linking.Field annotation = field.getAnnotation(com.redgrapefruit.itemnbt3.linking.Field.class);
+
+                String name = annotation.name();
+                if (annotation.name().equals("^NULL")) {
+                    name = field.getName();
+                }
+
+                link.addField(name, field);
             }
 
             if (field.isAnnotationPresent(Composite.class)) {
-                link.addComposite(field.getName(), field);
+                final Composite annotation = field.getAnnotation(Composite.class);
+
+                String name = annotation.name();
+                if (annotation.name().equals("^NULL")) {
+                    name = field.getName();
+                }
+
+                link.addComposite(name, field);
             }
         }
 
