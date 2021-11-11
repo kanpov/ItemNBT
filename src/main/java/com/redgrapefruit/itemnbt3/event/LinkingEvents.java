@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * A set of Fabric events related to forward and backward linking of serialized data.
  */
-public class LinkingEvents {
+public final class LinkingEvents {
     // Called before forward-linking
     public static final Event<LinkingEvent> PRE_FORWARD_LINK = EventFactory.createArrayBacked(LinkingEvent.class,
             (listeners) -> (stack, spec, nbt, data, instance) -> {

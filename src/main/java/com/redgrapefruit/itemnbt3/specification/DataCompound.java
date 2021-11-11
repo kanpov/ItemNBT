@@ -12,7 +12,7 @@ import java.util.UUID;
  * <br><br>
  * It is a very simple wrapper around a map for normal data and another map for nested {@link DataCompound}s.
  */
-public class DataCompound {
+public final class DataCompound {
     private final @NotNull Map<String, Object> rootTree = new HashMap<>();
     private final @NotNull Map<String, DataCompound> nestedTree = new HashMap<>();
 

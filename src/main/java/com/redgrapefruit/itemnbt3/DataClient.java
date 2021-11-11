@@ -19,7 +19,7 @@ import java.util.function.Supplier;
  * The {@link DataClient} is a hub for all operations in the ItemNBT3 library.<br>
  * It connects all serialization types together for you to use.
  */
-public class DataClient {
+public final class DataClient {
     private DataClient() {
         throw new RuntimeException("DataClient is not meant to be instantiated");
     }

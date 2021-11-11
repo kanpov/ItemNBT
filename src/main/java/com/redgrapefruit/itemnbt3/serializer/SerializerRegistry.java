@@ -17,7 +17,7 @@ import java.util.UUID;
  * If a type is a <b>composite type</b>: can be broken down into primitives/already-handled-types/other-composite-types,
  * a serializer for it is not needed.
  */
-public class SerializerRegistry {
+public final class SerializerRegistry {
     private static final @NotNull Map<Class<?>, TypeSerializer<?>> registry = new HashMap<>();
 
     static {

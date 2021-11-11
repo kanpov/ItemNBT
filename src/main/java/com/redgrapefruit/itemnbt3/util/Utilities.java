@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-public class Utilities {
+public final class Utilities {
     public static NbtCompound getOrCreateSubNbt(@NotNull NbtCompound nbt, @NotNull String name) {
         Objects.requireNonNull(nbt);
 

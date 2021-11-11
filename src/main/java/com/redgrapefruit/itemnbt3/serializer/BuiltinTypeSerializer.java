@@ -13,7 +13,7 @@ import java.util.function.BiFunction;
  *
  * @param <T> The data type that this serializer handles.
  */
-public class BuiltinTypeSerializer<T> implements TypeSerializer<T> {
+public final class BuiltinTypeSerializer<T> implements TypeSerializer<T> {
     private final @NotNull TriConsumer<NbtCompound, String, T> writer;
     private final @NotNull BiFunction<NbtCompound, String, T> reader;
     private final @NotNull T fallback;

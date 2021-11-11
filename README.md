@@ -1,25 +1,6 @@
 
-# ItemNBT 3.x
+# ItemNBT
 
-This is the branch for the active rewrite of ItemNBT2 to ItemNBT3.
+ItemNBT3 improves adding NBT to your items in Fabric Minecraft 1.17.
 
-The library is currently in **beta**, it's very close to a stable release.\
-A stable release will be published once all the docs are written.
-
-To use the latest beta in your mod, add this code into your `build.gradle`:
-
-```groovy
-repositories {
-  maven {
-    url = "https://redgrapefruit09.github.io/maven"
-    content {
-      includeGroup "com.redgrapefruit.itemnbt"
-    }
-  }
-}
-
-dependencies {
-  modImplementation "com.redgrapefruit.itemnbt:itemnbt:3.0-beta.1"
-  include "com.redgrapefruit.itemnbt:itemnbt:3.0-beta.1"
-}
-```
+Please read the official GitHub [wiki](https://github.com/RedGrapefruit09/ItemNBT/wiki) for a usage guide.

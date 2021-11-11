@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * A set of built-in Fabric events for deserialization
  */
-public class DeserializationEvents {
+public final class DeserializationEvents {
     // Called before deserializing custom data
     public static final Event<CustomEvent> CUSTOM_PRE_DESERIALIZE = EventFactory.createArrayBacked(CustomEvent.class,
             (listeners) -> (stack, nbt) -> {

@@ -18,7 +18,7 @@ import java.util.function.Supplier;
 /**
  * A {@link DataLink} ports your serialized data from a {@link DataCompound} to a Java POJO.
  */
-public class DataLink {
+public final class DataLink {
     private final @NotNull Map<String, Field> fields = new HashMap<>();
     private final @NotNull Map<String, Field> composites = new HashMap<>();
 

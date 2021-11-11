@@ -30,7 +30,7 @@ import java.util.UUID;
  * </ul>
  * The {@link Builder} is preferred for building out {@link Specification}s manually.
  */
-public class Specification {
+public final class Specification {
     private final @NotNull Map<String, TypeSerializer<?>> rootTree = new HashMap<>();
     private final @NotNull Map<String, Specification> nestedTree = new HashMap<>();
     private final @NotNull String id;

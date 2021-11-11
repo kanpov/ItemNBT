@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * A set of built-in Fabric events for serialization
  */
-public class SerializationEvents {
+public final class SerializationEvents {
     // Called before serializing custom data
     public static final Event<CustomEvent> CUSTOM_PRE_SERIALIZE = EventFactory.createArrayBacked(CustomEvent.class,
         (listeners) -> (stack, nbt) -> {
