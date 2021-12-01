@@ -1,7 +1,7 @@
 {
     "schemaVersion": 1,
     "id": "itemnbt",
-    "version": "2.0",
+    "version": "3.1",
     "name": "ItemNBT",
     "description": "This library allows to save & load data for items in NBT using ItemData",
     "authors": [
@@ -17,8 +17,8 @@
         "itemnbt.mixins.json"
     ],
     "depends": {
-        "fabricloader": ">=0.11.6",
+        "fabricloader": ">=0.12.6",
         "fabric": "*",
-        "minecraft": "1.17.1"
+        "minecraft": "1.18"
     }
 }
