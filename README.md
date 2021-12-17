@@ -11,7 +11,7 @@ ItemNBT3 improves adding NBT to your items in Fabric Minecraft 1.18.
     - Specification-based (create a _specification_ for your serialized fields and read into a _runtime compound_)
     - Linked (create a plain POJO and read & write directly into its fields with reflection)
 - Built-in **events**
-- Several **advanced** features:
+- Several **advanced** features ([tutorial](https://github.com/RedGrapefruit09/ItemNBT/wiki/Advanced)):
     - Automatic decomposition
     - Advanced reflection
     - Inheritance support (_experimental_)
