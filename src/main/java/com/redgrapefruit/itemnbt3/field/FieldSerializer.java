@@ -4,6 +4,7 @@ import com.redgrapefruit.itemnbt3.field.version.FieldVersion;
 import com.redgrapefruit.itemnbt3.field.version.SemanticFieldVersion;
 import com.redgrapefruit.itemnbt3.util.NoRemoval;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
@@ -47,7 +48,10 @@ public interface FieldSerializer<T> {
             @NotNull NbtCompound metadataNbt,
             @NotNull @NoRemoval NbtCompound rootNbt
     ) {
-        // implement custom logic here yourself
+        // Serialized version
+        metadataNbt.putString("Version", getExpectedDataVersion().getLiteral());
+        // Serializer ID
+        metadataNbt.putString("Serializer", getId().toString());
     }
 
     default boolean tryPortData(
@@ -61,8 +65,21 @@ public interface FieldSerializer<T> {
 
     default boolean tryPortFromV1Format(
             @NotNull NbtCompound rootNbt,
+            @NotNull NbtElement legacyData,
             @NotNull String key
     ) {
-        return false; // any V1 porting is by default supported by PrimitiveFieldSerializer
+        // Remove the old key, the legacyData parameter, holding the old data, still persists
+        rootNbt.remove(key);
+
+        // Create the metadata NBT inside the root NBT
+        NbtCompound metadataNbt = new NbtCompound();
+        rootNbt.put(key, metadataNbt);
+
+        // Create the dedicated value NBT inside the metadata NBT
+        NbtCompound dedicatedNbt = new NbtCompound();
+        metadataNbt.put("Content", dedicatedNbt);
+        dedicatedNbt.put("Value", legacyData);
+
+        return true;
     }
 }

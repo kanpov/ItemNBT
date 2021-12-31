@@ -1,5 +1,6 @@
 package com.redgrapefruit.itemnbt3.field.version;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -36,13 +37,9 @@ public class SemanticFieldVersion implements FieldVersion {
     }
 
     private boolean setupSemanticVersion(@NotNull String version) {
+        if (!isSemantic(version)) return false;
+
         String[] pieces = version.split("\\.");
-
-        if (pieces.length != 3) return false;
-
-        for (String piece : pieces) {
-            if (!isInteger(piece)) return false;
-        }
 
         major = Integer.parseInt(pieces[0]);
         minor = Integer.parseInt(pieces[1]);
@@ -51,7 +48,21 @@ public class SemanticFieldVersion implements FieldVersion {
         return true;
     }
 
-    private static boolean isInteger(String s) {
+    @ApiStatus.Internal
+    public static boolean isSemantic(@NotNull String version) {
+        String[] pieces = version.split("\\.");
+
+        if (pieces.length != 3) return false;
+
+        for (String piece : pieces) {
+            if (!isInteger(piece)) return false;
+        }
+
+        return true;
+    }
+
+    @ApiStatus.Internal
+    public static boolean isInteger(@NotNull String s) {
         try {
             Integer.parseInt(s);
         } catch (NumberFormatException | NullPointerException e) {
