@@ -1,5 +1,7 @@
 package com.redgrapefruit.itemnbt3.field;
 
+import com.redgrapefruit.itemnbt3.field.version.FieldVersion;
+import com.redgrapefruit.itemnbt3.field.version.SemanticFieldVersion;
 import com.redgrapefruit.itemnbt3.util.NoRemoval;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;

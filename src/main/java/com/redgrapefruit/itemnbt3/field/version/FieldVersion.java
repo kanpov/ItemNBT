@@ -1,4 +1,4 @@
-package com.redgrapefruit.itemnbt3.field;
+package com.redgrapefruit.itemnbt3.field.version;
 
 import org.jetbrains.annotations.NotNull;
 
