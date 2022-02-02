@@ -1,5 +1,6 @@
 package com.redgrapefruit.itemnbt3.serializer;
 
+import com.redgrapefruit.itemnbt3.field.FieldSerializer;
 import net.minecraft.nbt.NbtCompound;
 import org.jetbrains.annotations.NotNull;
 
@@ -8,7 +9,9 @@ import org.jetbrains.annotations.NotNull;
  * NBT representation and back.
  *
  * @param <T> The data type that this {@link TypeSerializer} handles
+ * @deprecated The {@link TypeSerializer} system is deprecated in favor of the more advanced {@link FieldSerializer} system.
  */
+@Deprecated
 public interface TypeSerializer<T> {
     /**
      * Read your data type from its NBT representation.

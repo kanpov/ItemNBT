@@ -1,5 +1,6 @@
 package com.redgrapefruit.itemnbt3.serializer;
 
+import com.redgrapefruit.itemnbt3.field.FieldSerializerRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.ApiStatus;
@@ -16,7 +17,10 @@ import java.util.UUID;
  * <br><br>
  * If a type is a <b>composite type</b>: can be broken down into primitives/already-handled-types/other-composite-types,
  * a serializer for it is not needed.
+ *
+ * @deprecated The type serializer system is being phased out by the field serializer system. The replacement for this class is {@link FieldSerializerRegistry}
  */
+@Deprecated
 public final class SerializerRegistry {
     private static final @NotNull Map<Class<?>, TypeSerializer<?>> registry = new HashMap<>();
 

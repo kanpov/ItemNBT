@@ -1,5 +1,6 @@
 package com.redgrapefruit.itemnbt3.serializer;
 
+import com.redgrapefruit.itemnbt3.field.FieldSerializer;
 import net.minecraft.nbt.NbtCompound;
 import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.NotNull;
@@ -12,7 +13,9 @@ import java.util.function.BiFunction;
  * A {@link BuiltinTypeSerializer} is a {@link TypeSerializer} implementation that invokes the lambdas passed into it.
  *
  * @param <T> The data type that this serializer handles.
+ * @deprecated The {@link TypeSerializer} system is deprecated in favor of the more advanced {@link FieldSerializer} system.
  */
+@Deprecated
 public final class BuiltinTypeSerializer<T> implements TypeSerializer<T> {
     private final @NotNull TriConsumer<NbtCompound, String, T> writer;
     private final @NotNull BiFunction<NbtCompound, String, T> reader;
